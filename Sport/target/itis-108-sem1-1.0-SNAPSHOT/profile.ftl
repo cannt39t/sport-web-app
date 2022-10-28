@@ -11,6 +11,16 @@
 <meta name="robots" content="noindex,nofollow"/>
 <link href="start_page_main_80f290cc155f9f410e82.css" rel="stylesheet"/>
 
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    $(document).on("click", "#ajax-button", function () {
+            $.get("/ajax", function (response) {
+                $("#ajax-div").text(response);
+            })
+        }
+    )
+</script>
+
 </head>
 <body style="background-color:black;">
 
@@ -48,6 +58,30 @@
         <br>
         <font size="+4">Weight: ${user.weight} <br>
     </h1>
+
+    <!DOCTYPE html>
+    <html>
+
+
+    <div id="demo">
+        <h2 class="text-center text-white">The XMLHttpRequest Object</h2>
+        <div class="button-container-div" style="background: white">
+            <button type="button" onclick="loadDoc()">Change Content</button>
+        </div>
+    </div>
+
+    <script>
+        function loadDoc() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                document.getElementById("demo").innerHTML =
+                    this.responseText;
+            }
+            xhttp.open("GET", "src/main/webapp/sources/ajax_info.txt");
+            xhttp.send();
+        }
+    </script>
+
 
 </#macro>
 </body>
