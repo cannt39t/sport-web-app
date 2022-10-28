@@ -1,77 +1,39 @@
 package com.sport.net.servlet;
 
-import com.sport.net.util.PasswordUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.sport.net.model.User;
+import com.sport.net.service.UserService;
+import com.sport.net.service.impl.UserServiceImpl;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "registerServlet", urlPatterns = "/register")
 public class RegisterServlet extends HttpServlet {
-
-    public static final String LOGIN = "login";
-    public static final String PASSWORD = "password123";
-    private static final Logger logger = LoggerFactory.getLogger(LoginServlet.class);
-
+    private final static UserService userService = new UserServiceImpl();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.sendRedirect("register.html");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        req.getRequestDispatcher("registration.ftl").forward(req, resp);
     }
-
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String _username = req.getParameter("_username");
         String _email = req.getParameter("_email");
         String _password = req.getParameter("_password");
-        String _conpassword = req.getParameter("_conpassword");
-        String _remember_me = req.getParameter("_remember_me");
 
-        System.out.println(_username);
-        System.out.println(_email);
-        System.out.println(_password);
-        System.out.println(_conpassword);
-        System.out.println(_remember_me);
+        User user = new User(_username, _email, _password);
+        userService.register(user);
 
-        String salt = PasswordUtil.generateSalt(512).get().toString();
-        String key = PasswordUtil.hashPassword(_password, salt).get().toString();
+        HttpSession httpSession = req.getSession();
+        httpSession.setAttribute("login", _username);
+        httpSession.setAttribute("email", _email);
+        httpSession.setMaxInactiveInterval(60 * 60);
 
-        if(_password.equals(_conpassword)){
-            // добавление в бд юзера
-            // пересылка на страницу с заполнением персональных данных для выборп плана тренировок
-            // какого вы пола?
-            // что  хотите прорабоать (руки, грудь, пресс, ног, все тело)
-            // какая у вас цель (сбросить вес, нарастить массу, быть в форме)
-            // какая у вас сейчас форму (стройная, средняя, пышная)
-            // как вас зовут ?
-            // сколько вам лет ?
-            // укажите свой рост
-            // укажите свой вес ?
-            // как часто хотите тренироваться ?
-        }
+        resp.sendRedirect("/userinfo");
 
-
-
-
-
-
-
-//        if (LOGIN.equals(login) && PASSWORD.equals(password)) {
-//            logger.info("User with username = {} logged in", login);
-//            HttpSession httpSession = req.getSession();
-//            httpSession.setAttribute("username", login);
-//            httpSession.setMaxInactiveInterval(60 * 60);
-//
-//            Cookie httpCookie = new Cookie("username", login);
-//            httpCookie.setMaxAge(24 * 60 * 60);
-//            resp.addCookie(httpCookie);
-//
-//            resp.sendRedirect("main.jsp");
-//        } else {
-//            resp.sendRedirect("/login");
-//        }
     }
 }

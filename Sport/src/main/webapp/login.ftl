@@ -12,7 +12,7 @@
 </head>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width; initial-scale=1">
     <style>
         * {
             box-sizing: border-box;
@@ -33,7 +33,7 @@
 
         .content {
             position: fixed;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0; 0; 0; 0.5);
             color: #f1f1f1;
             width: 100%;
             padding: 20px;
@@ -112,7 +112,7 @@
 
                 <div class="button-container-div">
                     <font size="-1">
-                        Don't have an account yet? <a href="/registration.html">Register now</a>
+                        Don't have an account yet? <a href="/registration.ftl">Register now</a>
                     </font>
                 </div>
 
@@ -122,7 +122,6 @@
     </div>
 </div>
 
-<!-- Including app.js jQuery Script -->
 <script src="app.js"></script>
 </body>
 
